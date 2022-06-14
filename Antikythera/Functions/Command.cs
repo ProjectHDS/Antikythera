@@ -63,7 +63,7 @@ public class Commands
 
         seed += (int)evt.MemberUin;
         var random = new Random(seed);
-        var rp = Math.Round(new GaussianRng(seed).Next(), 2) * 100;
+        var rp = Math.Floor((Math.Round(new GaussianRng(seed).Next(), 2) * 100) + 0.1);
         return new MessageBuilder().At(evt.MemberUin).Text($"的今日人品为：{rp}");
     }
 
@@ -87,7 +87,79 @@ public class Commands
         }
 
         seed += (int)evt.MemberUin;
-        var rp = Math.Round(new GaussianRng(seed).Next(), 2) * 100;
+        var rp = Math.Floor((Math.Round(new GaussianRng(seed).Next(), 2) * 100) + 0.1);
         return new MessageBuilder().At(evt.MemberUin).Text($"的昨日人品为：{rp}");
+    }
+
+    [Command(CommandType.Full, "/mrrp")]
+    private MessageBuilder? OnCommandMrrp(Bot bot, GroupMessageEvent evt)
+    {
+        var date = new DateTimeOffset(DateTime.Now).LocalDateTime;
+        var dateP = date.AddDays(1);
+        var salt = "\\u5496\\u55b1";
+        var year = dateP.Year.ToString();
+        var month = dateP.Month.ToString();
+        var day = dateP.Day.ToString();
+
+        year += salt;
+        day += salt;
+        var bytes = Encoding.UTF8.GetBytes($"{month}+{year}+{day}+{Regex.Unescape(salt)}");
+        int seed = 1;
+        foreach (var b in bytes)
+        {
+            seed += (int)b;
+        }
+
+        seed += (int)evt.MemberUin;
+        var rp = Math.Floor((Math.Round(new GaussianRng(seed).Next(), 2) * 100) + 0.1);
+        return new MessageBuilder().At(evt.MemberUin).Text($"的昨日人品为：{rp}");
+    }
+
+    [Command(CommandType.Full, "/qrrp")]
+    private MessageBuilder? OnCommandQrrp(Bot bot, GroupMessageEvent evt)
+    {
+        var date = new DateTimeOffset(DateTime.Now).LocalDateTime;
+        var dateP = date.AddDays(-2);
+        var salt = "\\u5496\\u55b1";
+        var year = dateP.Year.ToString();
+        var month = dateP.Month.ToString();
+        var day = dateP.Day.ToString();
+
+        year += salt;
+        day += salt;
+        var bytes = Encoding.UTF8.GetBytes($"{month}+{year}+{day}+{Regex.Unescape(salt)}");
+        int seed = 1;
+        foreach (var b in bytes)
+        {
+            seed += (int)b;
+        }
+
+        seed += (int)evt.MemberUin;
+        var rp = Math.Floor((Math.Round(new GaussianRng(seed).Next(), 2) * 100) + 0.1);
+        return new MessageBuilder().At(evt.MemberUin).Text($"的前日人品为：{rp}");
+    }
+
+    [Command(CommandType.Full, "/hrrp")]
+    private MessageBuilder? OnCommandHrrp(Bot bot, GroupMessageEvent evt)
+    {
+        var date = new DateTimeOffset(DateTime.Now).LocalDateTime;
+        var dateP = date.AddDays(2);
+        var salt = "\\u5496\\u55b1";
+        var year = dateP.Year.ToString();
+        var month = dateP.Month.ToString();
+        var day = dateP.Day.ToString();
+
+        year += salt;
+        day += salt;
+        var bytes = Encoding.UTF8.GetBytes($"{month}+{year}+{day}+{Regex.Unescape(salt)}");
+        int seed = 1;
+        foreach (var b in bytes)
+        {
+            seed += (int)b;
+        }
+
+        seed += (int)evt.MemberUin;
+        var rp = Math.Floor((Math.Round(new GaussianRng(seed).Next(), 2) * 100) + 0.1);
+        return new MessageBuilder().At(evt.MemberUin).Text($"的后日人品为：{rp}");
     }
 }
