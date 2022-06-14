@@ -75,4 +75,14 @@ public static class Utils
     /// <param name="factor">Probability scale, default 50%.</param>
     /// <returns></returns>
     public static bool CanIDo(double factor = 0.5f) => new Random().NextDouble() >= (1 - factor);
+
+    public static double GetGaussRandom(int seed, double miu, double sigma2)
+    {
+        var rand = new Random(seed);
+        double r1 = rand.NextDouble();
+        double r2 = rand.NextDouble();
+        var r = Math.Sqrt(-2 * Math.Log10(r1) * Math.Cos(r2 * Math.PI * 2));
+        var result = miu + r * sigma2;
+        return result;
+    }
 }
